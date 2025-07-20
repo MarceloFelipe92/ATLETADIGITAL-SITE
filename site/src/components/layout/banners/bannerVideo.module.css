@@ -1,0 +1,13 @@
+.videoWrapper {
+    /* A altura do container */
+    height: 760px;
+    width: 100%;
+    overflow: hidden;
+    /* Gradiente de máscara */
+    -webkit-mask-image: linear-gradient(to bottom, #000 50%, rgba(0, 0, 0, 0.63) 90%);
+    mask-image: linear-gradient(to bottom, #000 50%, rgba(0, 0, 0, 0.001) 90%);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}

@@ -1,0 +1,14 @@
+Bibliotecas que devem ser instaladas :
+
+npm install react-icons
+npm list react-icons
+
+npm install next-auth (Depois de instalar, você precisará configurar o NextAuth.js )
+
+npm install embla-carousel embla-carousel-react
+
+instalar as dependencias para funcionar o carousel :
+
+npm install swiper
+
+

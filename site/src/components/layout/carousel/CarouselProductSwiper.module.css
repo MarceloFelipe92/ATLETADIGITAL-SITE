@@ -1,0 +1,42 @@
+.carouselWrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden; /* Garante que nada transborde */
+
+    /* Máscara lateral suave para revelar conteúdo em fundos escuros */
+    -webkit-mask-image: linear-gradient(to right,
+                rgba(0, 0, 0, 0) 0%,   /* Transparente no início (conteúdo invisível) */
+                rgba(0, 0, 0, 0.9) 10%, /* Quase transparente, começando a aparecer */
+                rgba(0, 0, 0, 1) 90%,   /* Totalmente opaco no centro (conteúdo visível) */
+                rgba(0, 0, 0, 0) 100%); /* Transparente no final (conteúdo invisível) */
+    mask-image: linear-gradient(to right,
+                rgba(0, 0, 0, 0) 0%,
+                rgba(0, 0, 0, 0.9) 10%,
+                rgba(0, 0, 0, 1) 90%,
+                rgba(0, 0, 0, 0) 100%);
+
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
+/* Swiper customizado */
+.swiperCustom {
+    width: 100%;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+
+    /* Espaçamento lateral fluido entre 1rem e 3rem */
+    padding-left: clamp(1rem, 5vw, 3rem);
+    padding-right: clamp(1rem, 5vw, 3rem);
+
+    /* Transição suave ao redimensionar */
+    transition: padding 0.3s ease, max-width 0.3s ease;
+}
+
+/* SwiperSlide altura uniforme */
+.swiperSlide {
+    height: auto;
+}
