@@ -1,0 +1,24 @@
+Acessando o meu banco de dados 
+
+cd \xampp\mysql\bin
+
+mysql -u root
+
+USE db_backend;
+
+SHOW tables;
+
+DESCRIBE carrinhos;
+
+DESCRIBE clientes;
+
+DESCRIBE fornecedores;
+
+DESCRIBE marcas;
+
+DESCRIBE produtos;
+
+DESCRIBE rl_carrinho_produto;
+
+DESCRIBE usuarios;
+

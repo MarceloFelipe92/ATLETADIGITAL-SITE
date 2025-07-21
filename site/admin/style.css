@@ -1,0 +1,55 @@
+body {
+    background-color:rgba(209, 231, 221, 0.57);
+  }
+    /* === SIDEBAR / MENU LATERAL === */
+    .sidebar {
+      background-color: #00332c; 
+      z-index: 1000;
+      border-radius: 0 20px 20px 0;
+    }
+    
+   
+    
+    /* === NAVBAR SUPERIOR === */
+    .navbar-custom {
+      background-color:#00332c; 
+      margin-left: 250px;
+      padding: 20px 30px;
+      border-radius: 0 0 20px 20px;
+      z-index: 1100;
+    }
+    
+    /* === CARDS DAS CATEGORIAS === */
+    .category-card {
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      
+    }
+    
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    }
+   
+    
+    
+    /* === FORMULÁRIO === */
+    .form-container {
+      background: #00332c; 
+      padding: 5px;
+      border-radius: 5px;
+      box-shadow: 0 8px 5px rgba(0, 0, 0, 0.5);
+      border: 0.5px solid rgba(255, 255, 255, 0.05);
+      max-width: 1000px;
+      margin-left: 300px;
+      margin-top: 30px;
+      margin-bottom: 30px;
+  
+    }
+  
+    
+
+    
+    
