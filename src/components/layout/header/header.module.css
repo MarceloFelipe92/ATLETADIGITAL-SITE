@@ -1,0 +1,194 @@
+
+
+.header {
+  
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  /* Adicione uma altura fixa para o header */
+  align-items: center;
+  justify-content: space-between;
+  /* Mantém espaço entre os grupos de elementos */
+  padding: 0 40px;
+  /* Padding vertical ajustado, padding horizontal mantido */
+  background: linear-gradient(to bottom, #1b402c 65%, transparent 100%);
+  color: var(--foreground);
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 3px 6px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  /* Garante que padding não adicione à largura total */
+}
+
+.logo {
+  padding: 10px;
+  /* Pode ser removido se o padding do link for suficiente */
+  font-size: 24px;
+  /* Aumentado para destaque */
+  color: var(--secondary);
+  text-decoration: none;
+  /* Garante que não tenha sublinhado */
+  white-space: nowrap;
+  /* Evita que o logo quebre em várias linhas */
+}
+
+.logo:hover {
+  color: #39D5FF;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  /* Sombra mais suave */
+}
+
+.navList {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  /* Aumentado o espaçamento entre os itens da nav */
+  margin: 0;
+  padding: 0;
+  margin-right: auto;
+  /* Empurra os elementos seguintes para a direita */
+  margin-left: 50px;
+  /* Espaçamento entre logo e nav */
+}
+
+/* Base de estilo para links de navegação e botões de autenticação */
+.link,
+.authButton {
+  color: var(--foreground);
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 1.2px;
+  transition: color var(--transition), transform 0.2s, text-shadow var(--transition), border-color var(--transition), box-shadow var(--transition);
+  position: relative;
+  padding: 5px 10px;
+  /* Ajustado padding horizontal para mais consistência */
+
+  /* FORMATO DA BORDA: Mantido como você especificou */
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  border-left-width: 0;
+  border-right-width: 0;
+  border-style: solid;
+  /* Importante para que as bordas tenham estilo */
+  border-color: transparent;
+  /* Cor inicial transparente */
+  border-radius: 1rem;
+  /* rounded-2xl */
+
+  display: flex;
+  /* Para centralizar o conteúdo dentro do item, se houver */
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  /* Evita que o texto quebre */
+}
+
+
+/* Hover para links de navegação e botões de autenticação */
+.link:hover,
+.authButton:hover {
+  box-shadow: 0 0 15px rgba(57, 212, 255, 0.18);
+  /* Sombra ao passar o mouse */
+  color: #FFFFFF;
+  border-color: #39D5FF;
+  /* Borda ao passar o mouse */
+  transform: translateY(-2px);
+  /* Pequeno efeito de elevação */
+}
+
+.link:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.searchBox {
+  padding: 5px 10px;
+  /* Ajustado padding para consistência com links */
+  border-radius: var(--border-radius);
+  border: 2px solid var(--secondary);
+  /* Borda sólida de 2px com cor secundária */
+  outline: none;
+  font-size: 14px;
+  background-color: rgba(12, 8, 8, 0.795);
+  color: var(--foreground);
+  transition: border-color var(--transition), background-color var(--transition);
+  margin-right: 25px;
+  /* Espaçamento entre searchBox e authButtons */
+  box-sizing: border-box;
+  /* Para garantir que o padding não adicione largura ao input */
+}
+
+.searchBox::placeholder {
+  color: var(--foreground);
+}
+
+.searchBox:focus {
+  border-color: var(--primary);
+  background-color: rgba(5, 4, 4, 0.808);
+}
+
+.authButtons {
+  display: flex;
+  gap: 15px;
+  /* Espaçamento entre os botões de autenticação */
+}
+
+/* ✅ Responsividade até 768px e iPhone 15 Pro */
+@media (max-width: 768px) {
+
+
+  .header {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    padding: 5px;
+    gap: 15px;
+    position: fixed;
+  }
+
+  .navList {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .searchForm {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .searchBox {
+    width: 90%;
+    margin: 10px 0 0 0;
+  }
+
+  .authButtons {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .authButton {
+    width: 90%;
+    justify-content: center;
+  }
+
+  .link {
+    width: 90%;
+    justify-content: center;
+  }
+
+  .logo {
+    margin-bottom: 10px;
+  }
+}

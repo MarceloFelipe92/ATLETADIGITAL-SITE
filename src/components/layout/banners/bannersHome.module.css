@@ -1,0 +1,36 @@
+.bannerWrapper {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    /* Boa transição */
+    width: 900px;
+    height: 350px;
+
+    /* Sombra fixa: Um brilho sutil e sofisticado para indicar elevação */
+    /* Camada 1: Sombra principal da profundidade (quase invisível no fundo preto, mas adiciona textura) */
+    box-shadow:
+        0 10px 30px rgb(0, 0, 0),
+        /* Sombra mais escura e difusa, projetada para baixo */
+        0 0 20px 10px rgb(255, 255, 255);
+    /* Brilho branco muito sutil para bordas */
+
+    /* Removi as sombras 10px 50px que causam um deslocamento visual muito grande,
+       o que nem sempre transmite sofisticação e pode ser interpretado como "flutuando muito alto".
+       Um leve deslocamento (0 10px) com desfoque já cria a ilusão de elevação. */
+}
+
+.bannerWrapper:hover {
+    transform: translateY(-50px);
+    /* Eleva ligeiramente o banner ao passar o mouse */
+    box-shadow:
+        /* Sombra ao passar o mouse: Combinação de brilho azul e sombra preta sutil para profundidade */
+        30px 30px 20px rgba(0, 0, 0, 0.705),
+        /* Sombra mais profunda e escura, para dar mais contraste */
+        0 0px 600px 15px rgba(57, 212, 255, 0.753);
+    /* Brilho azul mais forte e espalhado */
+
+    /* Removi as múltiplas sombras pretas do seu hover anterior para simplificar e focar no brilho azul.
+       Se você quiser mais camadas de sombra preta no hover, podemos readicioná-las
+       com opacidades e desfoques ajustados para o azul. */
+}

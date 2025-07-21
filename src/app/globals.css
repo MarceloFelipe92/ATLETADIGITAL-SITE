@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #39D5FF;
+  --secondary: #8bd4be;
+  --accent: #39D5FF;
+  --border-radius: 8px;
+  --transition: 0.3s ease-in-out;
+}
+
+/* Tema escuro automático se quiser manter alguma variável (opcional) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Aqui não precisamos trocar nada, pois o fundo vai ser sempre o gradiente */
+  }
+}
+
+/* Aplica gradiente no fundo de todo o site */
+body {
+  @apply bg-gradient-to-br from-[#0c1f2e] via-[#142e46] to-[#0c1f2e] text-[#ededed];
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  transition: background var(--transition), color var(--transition);
+}
+.fade-bottom {
+  mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
