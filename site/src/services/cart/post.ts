@@ -6,7 +6,7 @@ export const addToCart = async (
   quantidade: number,
   token?: string
 ): Promise<boolean> => {
-  const id_produto = product.id;
+  const id_produto = product.id_produto; 
   const response = await fetch(`http://localhost:8080/carrinho/POST`, {
     method: "POST",
     headers: {

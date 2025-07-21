@@ -1,3 +1,4 @@
+// src/app/login/page.tsx
 "use client";
 
 import { useState } from "react";
@@ -26,8 +27,9 @@ export default function LoginPage() {
       // Se houver um erro (retornado do NextAuth.js/authorize), exibe-o
       setMessage(result.error);
     } else {
-      // Se o login for bem-sucedido, redireciona para a página do carrinho
-      router.push("/cart");
+      // Se o login for bem-sucedido, redireciona para a página home
+      setMessage("Login bem-sucedido! Redirecionando...");
+      router.push("/");
     }
   };
 

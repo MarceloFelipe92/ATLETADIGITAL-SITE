@@ -1,3 +1,4 @@
+// src/app/cart/page.tsx
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
@@ -14,11 +15,11 @@ import { updateCartItemQuantity } from "@/services/cart/put";
 export default function CartPage() {
   const { data: session, status } = useSession();
   const [cart, setCart] = useState<ICart>({ items: [], total: 0 });
-  const [loadingCart, setLoadingCart] = useState(true); // Novo estado de carregamento
-  const [errorCart, setErrorCart] = useState<string | null>(null); // Novo estado de erro
+  const [loadingCart, setLoadingCart] = useState(true);
+  const [errorCart, setErrorCart] = useState<string | null>(null);
 
   // Função para carregar o carrinho
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // REMOÇÃO DO eslint-disable-next-line react-hooks/exhaustive-deps pois já está no useCallback
   const loadCart = useCallback(async () => {
     if (status === "authenticated" && session?.user?.id && session.user.token) {
       setLoadingCart(true);
@@ -26,22 +27,28 @@ export default function CartPage() {
       try {
         const fetchedCart = await fetchCart(parseInt(session.user.id), session.user.token);
         setCart(fetchedCart);
-      } catch (err: any) {
+      } catch (err: unknown) { // CORREÇÃO: 'any' para 'unknown'
         console.error("Erro ao carregar carrinho:", err);
-        setErrorCart(err.message || "Não foi possível carregar o carrinho. Tente novamente.");
-        setCart({ items: [], total: 0 }); // Limpa o carrinho em caso de erro
+        let errorMessage = "Não foi possível carregar o carrinho. Tente novamente.";
+        if (err instanceof Error) {
+          errorMessage = err.message;
+        } else if (typeof err === 'object' && err !== null && 'message' in err) {
+          errorMessage = (err as { message: string }).message;
+        }
+        setErrorCart(errorMessage);
+        setCart({ items: [], total: 0 });
       } finally {
         setLoadingCart(false);
       }
     } else if (status === "unauthenticated") {
-      setCart({ items: [], total: 0 }); // Garante que o carrinho esteja vazio se desautenticado
+      setCart({ items: [], total: 0 });
       setLoadingCart(false);
     }
-  }, [status, session]);
+  }, [status, session]); // Dependências corrigidas para o useCallback
 
   useEffect(() => {
-    loadCart(); // Chama a função para carregar o carrinho
-  }, [status, session, loadCart]); // Dependências: status da sessão e objeto session
+    loadCart();
+  }, [loadCart]); // loadCart é uma dependência estável por causa do useCallback
 
   const handleUpdateQuantity = async (id_produto: number, delta: number) => {
     if (status !== "authenticated" || !session?.user?.id || !session.user.token) {
@@ -49,13 +56,10 @@ export default function CartPage() {
       return;
     }
 
-    // Encontra o item atual no carrinho
     const currentItem = cart.items.find((item) => item.product.id_produto === id_produto);
 
     if (!currentItem) {
       console.warn("Tentativa de atualizar quantidade de item não encontrado no carrinho.");
-      // Se o item não está no carrinho, e delta é positivo, talvez você queira adicioná-lo
-      // Mas a lógica do botão +/- no UI implica que o item já existe.
       return;
     }
 
@@ -63,19 +67,15 @@ export default function CartPage() {
 
     try {
       if (newQuantity <= 0) {
-        // Se a nova quantidade for 0 ou menos, chame a função de remoção
         await removeCartItem(parseInt(session.user.id), id_produto, session.user.token);
       } else {
-        // Se a nova quantidade for maior que 0, chame a função de atualização com a QUANTIDADE TOTAL
         await updateCartItemQuantity(
           parseInt(session.user.id),
           id_produto,
-          newQuantity, // <--- Aqui está a correção: passa a nova quantidade TOTAL
+          newQuantity,
           session.user.token
         );
       }
-
-      // Recarrega o carrinho após a operação bem-sucedida
       loadCart();
     } catch (error) {
       console.error("Erro ao atualizar quantidade:", error);
@@ -95,7 +95,6 @@ export default function CartPage() {
         id_produto,
         session.user.token
       );
-      // Recarrega o carrinho após a remoção bem-sucedida
       loadCart();
     } catch (error) {
       console.error("Erro ao remover item:", error);
@@ -103,7 +102,7 @@ export default function CartPage() {
     }
   };
 
-  if (status === "loading" || loadingCart) { // Inclua loadingCart aqui
+  if (status === "loading" || loadingCart) {
     return (
       <div className="min-h-screen flex items-center justify-center text-slate-300">
         Carregando...
@@ -119,7 +118,6 @@ export default function CartPage() {
     );
   }
 
-  // Se houver um erro, exiba-o
   if (errorCart) {
     return (
       <div className="min-h-screen flex items-center justify-center text-red-400">
@@ -150,7 +148,7 @@ export default function CartPage() {
                       {item.product.produto}
                     </p>
                     <p className="text-slate-300 text-sm">
-                      Preço: R$ {item.product.preco}
+                      Preço: R$ {item.product.preco?.toFixed(2).replace(".", ",")} {/* Adicionado ?. para preco que pode ser null */}
                     </p>
                     <p className="text-slate-300 text-sm">
                       Quantidade: {item.quantity}
@@ -162,7 +160,7 @@ export default function CartPage() {
                       onClick={() =>
                         handleUpdateQuantity(item.product.id_produto, -1)
                       }
-                      disabled={item.quantity <= 1} // Desabilita se a quantidade for 1 para evitar ir para 0 via delta -1
+                      disabled={item.quantity <= 1}
                       aria-label="Diminuir quantidade"
                     >
                       −
@@ -179,7 +177,7 @@ export default function CartPage() {
                     <button
                       className="rounded-2xl border-y-4 shadow-lg hover:border-red-500 px-4 flex items-center justify-center text-white hover:text-red-400 transition duration-300"
                       onClick={() => handleRemove(item.product.id_produto)}
-                      aria-label="Remover item do carrinho" // Boa prática de acessibilidade
+                      aria-label="Remover item do carrinho"
                     >
                       Remover
                     </button>
@@ -190,7 +188,7 @@ export default function CartPage() {
 
             <div className="mt-8 text-right">
               <p className="text-xl font-semibold text-slate-200">
-                Total: R$ {cart.total.toFixed(2).replace('.', ',')} {/* Formato BR */}
+                Total: R$ {cart.total.toFixed(2).replace('.', ',')}
               </p>
               <button
                 className="mt-4 rounded-2xl border-y-4 shadow-lg hover:border-[#39D5FF] px-6 py-3 flex items-center justify-center text-white hover:text-[#39D5FF] transition duration-300"

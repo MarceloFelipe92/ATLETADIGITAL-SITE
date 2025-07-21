@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
@@ -30,12 +30,25 @@ export async function POST(request: Request) {
 
     // 5. Se o PHP indicou sucesso, retransmite o sucesso para o frontend
     return NextResponse.json(phpResult, { status: phpResponse.status });
-
-  } catch (error: any) {
+  } catch (error: unknown) {
+    // <--- CORREÇÃO AQUI: 'any' para 'unknown'
     // Captura erros que ocorreram na API Route do Next.js (ex: problema de rede ao chamar o PHP)
     console.error("Erro na API Route /api/cadastro:", error);
+
+    // Adicione uma verificação de tipo para acessar 'message' com segurança
+    let errorMessage = "Erro interno do servidor ao processar o cadastro.";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    } else if (
+      typeof error === "object" &&
+      error !== null &&
+      "message" in error
+    ) {
+      errorMessage = (error as { message: string }).message;
+    }
+
     return NextResponse.json(
-      { message: "Erro interno do servidor ao processar o cadastro." },
+      { message: errorMessage }, // <--- Usa a mensagem de erro mais específica
       { status: 500 }
     );
   }

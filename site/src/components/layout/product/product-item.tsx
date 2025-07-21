@@ -14,13 +14,21 @@ const ProductItem = ({ product }: ProductItemProps) => {
     ? `http://localhost:8081/produtos/imagens/${product.imagem}`
     : "/images/placeholder-product.jpg";
 
-  const precoNumerico = parseFloat(product.preco as any) || 0;
+  // CORREÇÃO AQUI: Lidar com 'null' e garantir que 'preco' seja tratado como string para parseFloat
+  const precoNumerico =
+    product.preco !== null ? parseFloat(product.preco.toString()) : 0;
+  // Explicação:
+  // 1. `product.preco !== null`: Verifica se o preço não é nulo.
+  // 2. `product.preco.toString()`: Converte o número (ou o que quer que seja `product.preco` se não for nulo) para string.
+  //    Isso é seguro porque `parseFloat` espera uma string.
+  // 3. `parseFloat(...)`: Tenta converter a string para um número.
+  // 4. `|| 0`: Se o resultado de parseFloat for NaN (Not a Number), define como 0.
 
   return (
     <Link href={`/product/${product.id_produto}`} className="block h-full group">
       <div
         className="
-         bg-[#142e46] 
+          bg-[#142e46]
           border border-white/10
           rounded-2xl
           shadow-[0_4px_20px_rgba(0,0,0,0.4)]

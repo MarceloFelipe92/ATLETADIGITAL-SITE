@@ -1,8 +1,19 @@
+// src/app/cadastro/page.tsx
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+
+// Interface para a resposta esperada da API de cadastro
+// Ajuste esta interface para refletir EXATAMENTE o que seu backend PHP retorna
+interface CadastroApiResponse {
+    message?: string; // Mensagem de sucesso ou erro
+    status?: string;  // Status da operação (ex: "success", "error")
+    id_cliente?: number; // Exemplo: se o backend retornar o ID do cliente cadastrado
+    // Adicione outras propriedades que seu backend PHP possa retornar aqui.
+    // Ex: data?: { /* ... */ } se houver um objeto de dados aninhado
+}
 
 export default function CadastroPage() {
     const [form, setForm] = useState({
@@ -44,7 +55,11 @@ export default function CadastroPage() {
             if (key === "imagem") {
                 if (value) data.append("imagem", value);
             } else {
-                data.append(key, value as string);
+                if (typeof value === 'string') {
+                    data.append(key, value);
+                } else if (value !== null) {
+                    data.append(key, String(value));
+                }
             }
         });
 
@@ -54,7 +69,8 @@ export default function CadastroPage() {
                 body: data,
             });
 
-            const result = await res.json();
+            // CORREÇÃO AQUI: Usando a interface CadastroApiResponse
+            const result: CadastroApiResponse = await res.json();
 
             if (!res.ok) {
                 setMessage({ text: result.message || "Erro ao cadastrar.", type: 'error' });
@@ -67,8 +83,19 @@ export default function CadastroPage() {
                 router.push("/login");
             }, 3000);
 
-        } catch (error: any) {
-            setMessage({ text: error.message || "Erro inesperado. Tente novamente.", type: 'error' });
+        } catch (error: unknown) {
+            console.error("Erro no cadastro:", error);
+            let errorMessage = "Erro inesperado. Tente novamente.";
+
+            if (error instanceof Error) {
+                errorMessage = error.message;
+            } else if (typeof error === 'object' && error !== null && 'message' in error) {
+                // Se o erro for um objeto com uma propriedade 'message', use-a
+                const errObj = error as { message?: string };
+                errorMessage = errObj.message || "Erro desconhecido ao processar resposta.";
+            }
+
+            setMessage({ text: errorMessage, type: 'error' });
         }
     };
 
@@ -126,7 +153,6 @@ export default function CadastroPage() {
 
                     <button
                         type="submit"
-                        // Adicionada a classe 'cursor-pointer' aqui
                         className="md:col-span-2 w-full rounded-2xl border-y-4 shadow-lg hover:border-[#39D5FF] p-3 flex items-center justify-center text-white hover:text-[#39D5FF] transition duration-300 cursor-pointer"
                     >
                         Cadastrar
